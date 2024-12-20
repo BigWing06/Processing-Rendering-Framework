@@ -1,5 +1,4 @@
-// Test
-public class Vector2 {
+git public class Vector2 {
   float x; // Value one
   float y; // Value two
   int id; // Used to compare Vector2s to each other
@@ -98,3 +97,4 @@ public class EventData {
   interface Method { // Stores a method to be run
   void run();
 }
+//faspofijwepfoiwajfpoifjwapfowaifjpowiajapoiajapwoiewjpthawpoihpoi
