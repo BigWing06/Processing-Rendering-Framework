@@ -1,4 +1,3 @@
-//sjfsapoifjspaoifjpdsoisjfposijpdoi
 public class Vector2 {
   float x; // Value one
   float y; // Value two
@@ -74,7 +73,6 @@ public class EventData {
   Vector2 mousePos = null; // The mouse position
   Integer mouseBtn = null; // The mouse button pressed
   String type = null; // The type of event
-  
   EventData(String type_){ // The constructor; Sets the type
     this.type = type_;
   }
