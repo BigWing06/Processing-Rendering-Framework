@@ -1,4 +1,3 @@
-//Test comment
 git public class Vector2 {
   float x; // Value one
   float y; // Value two
