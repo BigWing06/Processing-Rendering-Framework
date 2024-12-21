@@ -1,4 +1,3 @@
-// Another Git test
 public class Node {
   Window parentWindow; // The window the Node is parented to 
   String name = "Untitled"; // The name of the Node to be displayed
