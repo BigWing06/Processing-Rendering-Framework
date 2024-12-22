@@ -16,7 +16,7 @@ public class Vector2 {
   }
   
   private void createVector(Number x_, Number y_) { // The private method that creates all Vector2s and their ids
-    this.x=x_.floatVValue();
+    this.x=x_.floatValue();
     this.y=y_.floatValue();
     this.id = int(str(int(this.x))+str(int(this.y)));
   }
