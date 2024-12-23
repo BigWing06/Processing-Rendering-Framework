@@ -9,8 +9,8 @@ public class Window extends Node {
   ArrayList<Node> masterNodeList = new ArrayList<Node>(); //***
   
   Window(PApplet parentPApp_) { // The constructor; Sets variables
-    super.setupNode(this, new Vector2(), 0.0, new Vector2(parentPApp_.width, parentPApp_.height));
     super.parentWindow = this;
+    super.setupNode(this, new Vector2(), 0.0, new Vector2(parentPApp_.width, parentPApp_.height));
     this.parentPApp = parentPApp_;
   }
   
@@ -62,10 +62,13 @@ public class Window extends Node {
   @Override
     void process() { // Runs evaluateAdoptions and runs process in its children
     super.size = new Vector2(this.parentPApp.width, this.parentPApp.height);
+    }
+  void tick(){
     this.evaluateAdoptions();
     for(Method action:this.actionQueue){ //Loops through all the actions in the current queue and runs them
       action.run();
     }
-    this.actionQueue = this.futureActionQueue; //Sets the next action queue to be the current one
+    this.actionQueue = (ArrayList<Method>)this.futureActionQueue.clone(); //Sets the next action queue to be the current one
+    this.futureActionQueue = new ArrayList<Method>(); //Resets the list for the next tick
   }
 }

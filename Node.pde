@@ -28,7 +28,7 @@ public class Node {
   ArrayList<Event> activeEvents = new ArrayList<Event>(); //A list that keeps track of the active events in this node
 
   void setupNode(Node parent_, Vector2 pos_, Float layer, Vector2 size) { //Setup function for node, sets default parameters
-    this.parentWindow = root.mainWindow; // THIS NEEDS FIXED
+    this.parentWindow = parent_.parentWindow; // THIS NEEDS FIXED
     this.createVitalEventDefaultHashmap();//Creates hashmap that is used for running vital events ***I think this should be changed so it is not needed
     if (this != parent_){ //Checks to make sure that the node isn't the window which passes in itself as the parent
       this.parent(parent_);
@@ -36,6 +36,8 @@ public class Node {
     this.pos = pos_;
     this.layer = layer;
     this.size = size;
+    print(this.parentWindow);
+    this.parentWindow.addAction(this::process); //Runs the process function once so that it begins to loop, otherwise it doesn't get added again
   }
   void createVitalEventDefaultHashmap() {
 
@@ -216,7 +218,9 @@ public class Node {
     if (this.sizeMode==(Size.inherit)) {
       this.size = this.parent.getSize();
     }
-    this.parentWindow.addAction(this::process);
+    if (this.processing){ //Checks to make sure that this node needs to be processing
+      this.parentWindow.addAction(this::process); //Adds this function to the next action queue so that it is run again
+    }
   }
   void ready() {
     ArrayList<Float> layersList = new ArrayList<Float>(this.layerMap.keySet());
