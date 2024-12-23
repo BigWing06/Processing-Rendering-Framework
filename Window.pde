@@ -55,7 +55,7 @@ public class Window extends Node {
     this.adoptionList = new ArrayList<Node[]>();
   }
   
-  void addAction(Method action){
+  void addAction(Method action){ //Adds action to the queue
     this.futureActionQueue.add(action);
   }
 
@@ -63,9 +63,9 @@ public class Window extends Node {
     void process() { // Runs evaluateAdoptions and runs process in its children
     super.size = new Vector2(this.parentPApp.width, this.parentPApp.height);
     this.evaluateAdoptions();
-    for(Method action:this.actionQueue){
+    for(Method action:this.actionQueue){ //Loops through all the actions in the current queue and runs them
       action.run();
     }
-    this.actionQueue = this.futureActionQueue;
+    this.actionQueue = this.futureActionQueue; //Sets the next action queue to be the current one
   }
 }
