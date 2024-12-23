@@ -7,11 +7,9 @@ public class Window extends Node {
   ArrayList<Node> masterNodeList = new ArrayList<Node>(); //***
   
   Window(PApplet parentPApp_) { // The constructor; Sets variables
-    super();
+    super.setupNode(this, new Vector2(), 0.0, new Vector2(parentPApp_.width, parentPApp_.height));
+    super.parentWindow = this;
     this.parentPApp = parentPApp_;
-    super.pos = new Vector2(0, 0);
-    super.size = new Vector2(this.parentPApp.width, this.parentPApp.height); // Sets the size to the window size
-    //super.size = new Vector2(width, height);
   }
   
   @Override

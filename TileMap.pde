@@ -3,7 +3,7 @@ public class TileMap extends Node {
   Vector2 scale; // The scale of the tiles
   
   TileMap(Node parent_, Float layer_, Vector2 scale_, Vector2 pos_, Vector2 size_) { // The constructor; sets variables
-    super(parent_, pos_, layer_, size_.multiply(scale_));
+    super.setupNode(parent_, pos_, layer_, size_.multiply(scale_));
     this.scale = scale_;
   }
   

@@ -20,22 +20,21 @@ public class Node {
   float strokeWeight = 0.0; //Changes how thick the stroke of the node is
   Float layer; //Layer the node is drawn on
   HashMap<Float, ArrayList<Node>> layerMap = new HashMap<Float, ArrayList<Node>>(); //Stores all the nodes children by layer
-
+  
   //Event Parameters
   Boolean mouseOver = false; // If the mouse if hovering over the Node
   List<Float> collisionLayers = Arrays.asList(new Float[]{0.0}); // Layers that the node will collide on
   HashMap<String, Method> vitalEventDefaults = new HashMap<String, Method>(); //Contains the methods to run when one of the default events is triggered
   ArrayList<Event> activeEvents = new ArrayList<Event>(); //A list that keeps track of the active events in this node
-  
-  Node() {
-
-    this.createVitalEventDefaultHashmap();
-    this.parentWindow = ((Window)this);
-  };
-  Node(Node parent_, Vector2 pos_, Float layer_, Vector2 size_) {
-    this.createVitalEventDefaultHashmap();
+  void setupNode(Node parent_, Vector2 pos_, Float layer, Vector2 size) {
     this.parentWindow = root.mainWindow; // THIS NEEDS FIXED
-    this.setupNode(parent_, pos_, layer_, size_);
+    this.createVitalEventDefaultHashmap();
+    if (this != parent_){ //Checks to make sure that the node isn't the window which passes in itself as the parent
+      this.parent(parent_);
+    }
+    this.pos = pos_;
+    this.layer = layer;
+    this.size = size;
   }
   void createVitalEventDefaultHashmap() {
 
@@ -49,12 +48,6 @@ public class Node {
    this.mouseOver = false; 
   }
   void onAdoption() {
-  }
-  void setupNode(Node parent_, Vector2 pos_, Float layer, Vector2 size) {
-    this.parent(parent_);
-    this.pos = pos_;
-    this.layer = layer;
-    this.size = size;
   }
   void setParentWindow(Window parentWindow_) {
     this.parentWindow = parentWindow_;
