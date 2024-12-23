@@ -216,15 +216,7 @@ public class Node {
     if (this.sizeMode==(Size.inherit)) {
       this.size = this.parent.getSize();
     }
-    ArrayList<Float> layersList = new ArrayList<Float>(this.layerMap.keySet());
-    Collections.sort(layersList);
-    for (Float layer : layersList) {
-      for (Node node : this.layerMap.get(layer)) {
-        if (node.processing) {
-          node.process();
-        }
-      }
-    }
+    this.parentWindow.addAction(this::process);
   }
   void ready() {
     ArrayList<Float> layersList = new ArrayList<Float>(this.layerMap.keySet());

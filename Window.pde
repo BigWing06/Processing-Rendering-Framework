@@ -2,6 +2,8 @@ public class Window extends Node {
   String childrenHierarchyText=""; // The text to be displayed before the hierarchy is printed
   PApplet parentPApp; // The PApplet that the window is within, for reference in drawing
   Boolean debug = false;
+  ArrayList<Method> actionQueue = new ArrayList<Method>(); //Queue of actions that is being processed
+  ArrayList<Method> futureActionQueue = new ArrayList<Method>();//Queue of actions to run on next tick
   ArrayList<Node[]> adoptionList = new ArrayList<Node[]>(); // The list of Nodes to be adopted; First node (key) is for adopter, second (value) is adoptee
   ArrayList<Node[]> unadoptionList = new ArrayList<Node[]>(); // The list of Nodes to be undaopted; First node (key) is for unadopter, second (value) is unadoptee
   ArrayList<Node> masterNodeList = new ArrayList<Node>(); //***
@@ -53,19 +55,17 @@ public class Window extends Node {
     this.adoptionList = new ArrayList<Node[]>();
   }
   
-  
+  void addAction(Method action){
+    this.futureActionQueue.add(action);
+  }
+
   @Override
     void process() { // Runs evaluateAdoptions and runs process in its children
     super.size = new Vector2(this.parentPApp.width, this.parentPApp.height);
     this.evaluateAdoptions();
-    ArrayList<Float> layersList = new ArrayList<Float>(this.layerMap.keySet());
-    Collections.sort(layersList);
-    for (Float layer : layersList) {
-      for (Node node : this.layerMap.get(layer)) {
-        if (node.processing) {
-          node.process();
-        }
-      }
+    for(Method action:this.actionQueue){
+      action.run();
     }
+    this.actionQueue = this.futureActionQueue;
   }
 }
