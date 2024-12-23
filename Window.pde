@@ -2,16 +2,16 @@ public class Window extends Node {
   String childrenHierarchyText=""; // The text to be displayed before the hierarchy is printed
   PApplet parentPApp; // The PApplet that the window is within, for reference in drawing
   Boolean debug = false;
+  ArrayList<Method> actionQueue = new ArrayList<Method>(); //Queue of actions that is being processed
+  ArrayList<Method> futureActionQueue = new ArrayList<Method>();//Queue of actions to run on next tick
   ArrayList<Node[]> adoptionList = new ArrayList<Node[]>(); // The list of Nodes to be adopted; First node (key) is for adopter, second (value) is adoptee
   ArrayList<Node[]> unadoptionList = new ArrayList<Node[]>(); // The list of Nodes to be undaopted; First node (key) is for unadopter, second (value) is unadoptee
   ArrayList<Node> masterNodeList = new ArrayList<Node>(); //***
   
   Window(PApplet parentPApp_) { // The constructor; Sets variables
-    super();
+    super.parentWindow = this;
+    super.setupNode(this, new Vector2(), 0.0, new Vector2(parentPApp_.width, parentPApp_.height));
     this.parentPApp = parentPApp_;
-    super.pos = new Vector2(0, 0);
-    super.size = new Vector2(this.parentPApp.width, this.parentPApp.height); // Sets the size to the window size
-    //super.size = new Vector2(width, height);
   }
   
   @Override
@@ -55,19 +55,20 @@ public class Window extends Node {
     this.adoptionList = new ArrayList<Node[]>();
   }
   
-  
+  void addAction(Method action){ //Adds action to the queue
+    this.futureActionQueue.add(action);
+  }
+
   @Override
     void process() { // Runs evaluateAdoptions and runs process in its children
     super.size = new Vector2(this.parentPApp.width, this.parentPApp.height);
-    this.evaluateAdoptions();
-    ArrayList<Float> layersList = new ArrayList<Float>(this.layerMap.keySet());
-    Collections.sort(layersList);
-    for (Float layer : layersList) {
-      for (Node node : this.layerMap.get(layer)) {
-        if (node.processing) {
-          node.process();
-        }
-      }
     }
+  void tick(){
+    this.evaluateAdoptions();
+    for(Method action:this.actionQueue){ //Loops through all the actions in the current queue and runs them
+      action.run();
+    }
+    this.actionQueue = (ArrayList<Method>)this.futureActionQueue.clone(); //Sets the next action queue to be the current one
+    this.futureActionQueue = new ArrayList<Method>(); //Resets the list for the next tick
   }
 }

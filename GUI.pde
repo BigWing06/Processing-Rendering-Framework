@@ -6,7 +6,7 @@ public class Button extends Node{
   color onClickFill; // The color of the button on click
   
   Button(Node parent_, Vector2 pos_, float layer_, Vector2 size_, String text_){ // The constructor; sets variables and events
-    super(parent_, pos_, layer_, size_);
+    super.setupNode(parent_, pos_, layer_, size_);
     this.setDefaultColors();
     this.displayText = new Text2D(this, new Vector2(), text_, super.size.y, 1.0);
     this.displayText.center();
