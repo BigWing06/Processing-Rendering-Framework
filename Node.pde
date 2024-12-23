@@ -26,9 +26,10 @@ public class Node {
   List<Float> collisionLayers = Arrays.asList(new Float[]{0.0}); // Layers that the node will collide on
   HashMap<String, Method> vitalEventDefaults = new HashMap<String, Method>(); //Contains the methods to run when one of the default events is triggered
   ArrayList<Event> activeEvents = new ArrayList<Event>(); //A list that keeps track of the active events in this node
-  void setupNode(Node parent_, Vector2 pos_, Float layer, Vector2 size) {
+
+  void setupNode(Node parent_, Vector2 pos_, Float layer, Vector2 size) { //Setup function for node, sets default parameters
     this.parentWindow = root.mainWindow; // THIS NEEDS FIXED
-    this.createVitalEventDefaultHashmap();
+    this.createVitalEventDefaultHashmap();//Creates hashmap that is used for running vital events ***I think this should be changed so it is not needed
     if (this != parent_){ //Checks to make sure that the node isn't the window which passes in itself as the parent
       this.parent(parent_);
     }
