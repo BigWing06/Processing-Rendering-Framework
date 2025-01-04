@@ -97,12 +97,12 @@ public class Node {
     this.attachmentPos = new Vector2();
     this.originPos = new Vector2();
   }
-  void parent(Node parent_) {
+  void parent(Node parent_) { //Attaches a child node to its parent or removes it if parent_ equals null
     if (parent_!=null) {
-      this.parentWindow.adoptionList.add(new Node[]{parent_, this});
+      
     }
-    if (this.parent!=null) {
-      this.parentWindow.unadoptionList.add(new Node[]{this.parent, this});
+    else if (parent_==null) {
+      this.parent.unadpot(this); //Calls unadpot function on parent which removes the node from it's lists
     }
   }
   void adopt(Node child) {
