@@ -1,40 +1,43 @@
 public class Node {
-  Window parentWindow; // The window the Node is parented to 
+
+  //Main Parameters
   String name = "Untitled"; // The name of the Node to be displayed
+  Node parent = null; // Stores the parent node of this node
+  Window parentWindow; // The window the Node is parented to 
   Integer id;
   ArrayList<Node> children = new ArrayList<Node>();
   Boolean processing = true; // If the Node runs its process function on process
-  Boolean mouseOver = false; // If the mouse if hovering over the Node
-  
-  
-  
-  
-  Size sizeMode = Size.basic; // The way the Node is sized, either inhieriting or to the values the values that get set
-  
-  Node parent = null;
-  List<Float> collisionLayers = Arrays.asList(new Float[]{0.0});
-  HashMap<Float, ArrayList<Node>> layerMap = new HashMap<Float, ArrayList<Node>>();
-  HashMap<String, Method> vitalEventDefaults = new HashMap<String, Method>();
-  ArrayList<Integer> killList = new ArrayList<Integer>();
-  ArrayList<Event> activeEvents = new ArrayList<Event>();
-  private Vector2 pos;
-  Float layer;
-  Boolean visible = true;
-  color strokeColor = color(0, 0, 0);
-  color fill = color (0, 0, 0, 0);
-  float strokeWeight = 0.0;
-  private Vector2 size;
-  Vector2 originPos = new Vector2(-1, -1);
-  Vector2 attachmentPos = new Vector2(-1, -1);
-  Node() {
 
-    this.createVitalEventDefaultHashmap();
-    this.parentWindow = ((Window)this);
-  };
-  Node(Node parent_, Vector2 pos_, Float layer_, Vector2 size_) {
-    this.createVitalEventDefaultHashmap();
-    this.parentWindow = root.mainWindow; // THIS NEEDS FIXED
-    this.setupNode(parent_, pos_, layer_, size_);
+  //Canvas Parameters
+  private Vector2 pos; //Position of node relative to parent
+  Vector2 originPos = new Vector2(-1, -1); //Changes where (0, 0) is locate in this node **Default is top left corner
+  Vector2 attachmentPos = new Vector2(-1, -1);//Changes wehre (0, 0) is in the node parent default is top left corner
+  private Vector2 size; //Size of the node
+  Size sizeMode = Size.basic; // The way the Node is sized, either inhieriting or to the values the values that get set
+  Boolean visible = true; //Determines if the node is rendered on the canvas
+  color fill = color (0, 0, 0, 0); //Background color/fill color of the node
+  color strokeColor = color(0, 0, 0); //Changes stroke color of the node
+  float strokeWeight = 0.0; //Changes how thick the stroke of the node is
+  Float layer; //Layer the node is drawn on
+  HashMap<Float, ArrayList<Node>> layerMap = new HashMap<Float, ArrayList<Node>>(); //Stores all the nodes children by layer
+  
+  //Event Parameters
+  Boolean mouseOver = false; // If the mouse if hovering over the Node
+  List<Float> collisionLayers = Arrays.asList(new Float[]{0.0}); // Layers that the node will collide on
+  HashMap<String, Method> vitalEventDefaults = new HashMap<String, Method>(); //Contains the methods to run when one of the default events is triggered
+  ArrayList<Event> activeEvents = new ArrayList<Event>(); //A list that keeps track of the active events in this node
+
+  void setupNode(Node parent_, Vector2 pos_, Float layer, Vector2 size) { //Setup function for node, sets default parameters
+    this.parentWindow = parent_.parentWindow; // THIS NEEDS FIXED
+    this.createVitalEventDefaultHashmap();//Creates hashmap that is used for running vital events ***I think this should be changed so it is not needed
+    if (this != parent_){ //Checks to make sure that the node isn't the window which passes in itself as the parent
+      this.parent(parent_);
+    }
+    this.pos = pos_;
+    this.layer = layer;
+    this.size = size;
+    print(this.parentWindow);
+    this.parentWindow.addAction(this::process); //Runs the process function once so that it begins to loop, otherwise it doesn't get added again
   }
   void createVitalEventDefaultHashmap() {
 
@@ -48,12 +51,6 @@ public class Node {
    this.mouseOver = false; 
   }
   void onAdoption() {
-  }
-  void setupNode(Node parent_, Vector2 pos_, Float layer, Vector2 size) {
-    this.parent(parent_);
-    this.pos = pos_;
-    this.layer = layer;
-    this.size = size;
   }
   void setParentWindow(Window parentWindow_) {
     this.parentWindow = parentWindow_;
@@ -221,14 +218,8 @@ public class Node {
     if (this.sizeMode==(Size.inherit)) {
       this.size = this.parent.getSize();
     }
-    ArrayList<Float> layersList = new ArrayList<Float>(this.layerMap.keySet());
-    Collections.sort(layersList);
-    for (Float layer : layersList) {
-      for (Node node : this.layerMap.get(layer)) {
-        if (node.processing) {
-          node.process();
-        }
-      }
+    if (this.processing){ //Checks to make sure that this node needs to be processing
+      this.parentWindow.addAction(this::process); //Adds this function to the next action queue so that it is run again
     }
   }
   void ready() {

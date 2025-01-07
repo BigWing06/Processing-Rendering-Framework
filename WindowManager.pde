@@ -20,17 +20,17 @@ public class WindowManager {
   }
   
   void callReady() { // Runs the process function once to parent all children; Then runs the ready function of all children of all windows.
-    mainWindow.process();
+    mainWindow.tick();
     mainWindow.ready();
     for (ChildWindow window : this.childWindows) {
-      window.window.process();
+      window.window.tick();
       window.window.ready();
     }
   }
 
   void run() { // Evaluates vital events, runs process and draw
     this.eventManager.evaluateVitalEvents();
-    mainWindow.process();
+    mainWindow.tick();
     mainWindow.draw();
   }
   
@@ -83,7 +83,7 @@ public class ChildWindow extends PApplet {
   
   @Override
     public void draw() { // Draws and processes the Window (Node) for this ChildWindow; Runs once a loop
-    this.window.process();
+    this.window.tick();
     this.window.draw();
   }
   

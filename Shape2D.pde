@@ -35,7 +35,7 @@ public class Text2D extends Shape2D {
 
 public class Shape2D extends Node {
   Shape2D(Node parent_, Vector2 pos_, Float layer_, Vector2 size_){ // Runs the super constructor
-    super(parent_, pos_, layer_, size_);
+    super.setupNode(parent_, pos_, layer_, size_);
   }
 
 }
